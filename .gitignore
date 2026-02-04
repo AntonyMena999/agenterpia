@@ -1,0 +1,12 @@
+# Archivos de entorno y secretos (¡MUY IMPORTANTE!)
+.env
+backend/.env
+
+# Carpetas de Python y dependencias
+venv/
+__pycache__/
+*.pyc
+
+# Archivos de sistema y editor
+.DS_Store
+.vscode/
