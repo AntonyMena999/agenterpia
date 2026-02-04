@@ -1,31 +1,46 @@
-from fastapi import FastAPI, Header, HTTPException
-from jose import jwt
-from foundry_agent import ask_agent
+import os
+from fastapi import FastAPI, HTTPException, Header
+from pydantic import BaseModel
+from typing import Optional
+from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
 
-app = FastAPI()
+# Importamos la lógica del agente desde foundry_agent.py
+try:
+    from foundry_agent import ask_agent
+except ImportError:
+    from .foundry_agent import ask_agent
 
-TENANT = "TU_TENANT_ID"
+load_dotenv()
 
-def verify_token(auth_header: str):
+app = FastAPI(title="Chat ERP IA")
 
-    if not auth_header:
-        raise HTTPException(401)
+# Configuración de CORS para permitir que el frontend (index.html) se comunique con el backend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Permite cualquier origen (ajustar en producción)
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-    token = auth_header.split(" ")[1]
-
-    decoded = jwt.get_unverified_claims(token)
-
-    if decoded["tid"] != TENANT:
-        raise HTTPException(401)
-
-    return decoded
-
+class Question(BaseModel):
+    text: str
 
 @app.post("/ask")
-def ask(q: dict, authorization: str = Header(None)):
+async def ask_endpoint(question: Question, authorization: Optional[str] = Header(None)):
+    # 1. Validación básica de seguridad (Token de Entra ID)
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Token de autorización faltante o inválido")
+    
+    # 2. Procesamiento con el Agente de Azure Foundry
+    try:
+        response_text = ask_agent(question.text)
+        return {"response": response_text}
+    except Exception as e:
+        print(f"Error en el agente: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
-    verify_token(authorization)
-
-    answer = ask_agent(q["text"])
-
-    return {"response": answer}
+@app.get("/")
+async def root():
+    return {"status": "online", "service": "Chat ERP IA Backend"}
