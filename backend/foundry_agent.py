@@ -7,9 +7,14 @@ load_dotenv()
 
 credential = DefaultAzureCredential()
 
-project = AIProjectClient.from_connection_string(
+# Obtener endpoint y asegurar que use HTTPS (requerido por Azure SDK)
+endpoint_url = os.environ["PROJECT_ENDPOINT"].strip()
+if not endpoint_url.startswith("https://") and not endpoint_url.startswith("http://"):
+    endpoint_url = f"https://{endpoint_url}"
+
+project = AIProjectClient(
     credential=credential,
-    conn_str=os.environ["PROJECT_CONNECTION_STRING"]
+    endpoint=endpoint_url
 )
 
 agent = project.agents.get_agent(os.environ["AGENT_ID"])

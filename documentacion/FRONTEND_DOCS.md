@@ -12,15 +12,13 @@
   - Librería oficial de Microsoft para autenticación SPA (Single Page Application).
 
 ## Configuración (`script.js`)
-Se requiere configurar el objeto `msalConfig` con los valores de tu Azure Tenant:
+El frontend no almacena credenciales fijas. Al cargar, consume el endpoint `/config` del backend para obtener los IDs necesarios:
 ```javascript
-const msalApp = new msal.PublicClientApplication({
-  auth: {
-    clientId: "TU_CLIENT_ID", // ID de la aplicación registrada en Azure
-    authority: "https://login.microsoftonline.com/TU_TENANT_ID", // ID del inquilino
-    redirectUri: window.location.origin // URL base (ej. http://localhost:3000)
-  }
-});
+async function initAuth() {
+  const res = await fetch("http://127.0.0.1:8000/config");
+  const config = await res.json();
+  // Inicializa MSAL con config.clientId y config.tenantId
+}
 ```
 
 ## Funciones Clave

@@ -38,12 +38,8 @@ Endpoint principal que recibe las preguntas del usuario.
 ## Configuración del Entorno
 El backend utiliza `DefaultAzureCredential`, lo que permite autenticarse localmente mediante **Azure CLI** (`az login`) sin necesidad de gestionar secretos manualmente.
 
-### Variables Requeridas (Configuración)
-Aunque uses `az login` para la identidad, necesitas definir a qué recursos conectarte en tu archivo `.env`:
-
-- `PROJECT_CONNECTION_STRING`: Cadena de conexión del proyecto Azure AI Foundry.
+### Variables Requeridas (`.env`)
+- `PROJECT_ENDPOINT`: Endpoint del proyecto Azure AI Foundry (URL que comienza con https://...).
 - `AGENT_ID`: ID del agente configurado en Foundry que orquestará la respuesta.
-- `MODEL_DEPLOYMENT_NAME`: Nombre del despliegue del modelo (ej. `gpt-4o-mini`).
-- `AZURE_OPENAI_API_VERSION`: Versión de la API (ej. `2024-12-01-preview`).
 
 *Nota: `AZURE_TENANT_ID` y `AZURE_SUBSCRIPTION_ID` se detectan automáticamente con `az login`, pero pueden definirse explícitamente si es necesario.*

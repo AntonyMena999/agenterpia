@@ -1,12 +1,7 @@
-# Archivos de entorno y secretos (¡MUY IMPORTANTE!)
+# Ignorar secretos y configuración local
 .env
-backend/.env
 
-# Carpetas de Python y dependencias
+# Ignorar carpetas de entorno virtual y caché de Python
 venv/
 __pycache__/
 *.pyc
-
-# Archivos de sistema y editor
-.DS_Store
-.vscode/

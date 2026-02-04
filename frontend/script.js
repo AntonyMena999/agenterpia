@@ -1,27 +1,61 @@
-const msalApp = new msal.PublicClientApplication({
-  auth: {
-    clientId: "TU_CLIENT_ID",
-    authority: "https://login.microsoftonline.com/TU_TENANT_ID",
-    redirectUri: window.location.origin
-  }
-});
+let msalApp;
 
 const req = { scopes: ["User.Read"] };
 
+async function initAuth() {
+  try {
+    const res = await fetch("http://127.0.0.1:8000/config");
+    const config = await res.json();
+
+    msalApp = new msal.PublicClientApplication({
+      auth: {
+        clientId: config.clientId,
+        authority: "https://login.microsoftonline.com/" + config.tenantId,
+        redirectUri: window.location.origin
+      }
+    });
+    updateUI();
+  } catch (error) {
+    console.error("Error cargando configuracion:", error);
+  }
+}
+
+// Función para controlar el estado de la interfaz (bloquear/desbloquear chat)
+function updateUI() {
+  if (!msalApp) return;
+  const account = msalApp.getAllAccounts()[0];
+  const inputField = document.getElementById("q");
+  
+  if (inputField) {
+    if (account) {
+      // Usuario logueado: Habilitar chat
+      inputField.disabled = false;
+      inputField.placeholder = "Escribe tu pregunta sobre el ERP...";
+    } else {
+      // No logueado: Bloquear chat
+      inputField.disabled = true;
+      inputField.placeholder = "Inicia sesion para chatear";
+    }
+  }
+}
+
 function login() {
-  msalApp.loginPopup(req);
+  // Al terminar el login exitosamente, actualizamos la interfaz para desbloquear el chat
+  msalApp.loginPopup(req)
+    .then(() => updateUI())
+    .catch(error => console.error("Error en login:", error));
 }
 
 function logout() {
-  msalApp.logout();
+  msalApp.logoutPopup().then(() => updateUI()).catch(console.error);
 }
 
 async function send() {
-
   const acc = msalApp.getAllAccounts()[0];
 
   if (!acc) {
-    alert("Login primero");
+    alert("Acceso denegado: Debes iniciar sesion con Microsoft Entra ID para enviar mensajes.");
+    login(); // Opcional: Intentar abrir el login automáticamente
     return;
   }
 
@@ -45,3 +79,6 @@ async function send() {
 
   document.getElementById("r").innerText = data.response;
 } 
+
+// Ejecutar al cargar la página para verificar si ya existe una sesión activa
+initAuth();

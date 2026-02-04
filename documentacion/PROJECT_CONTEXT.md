@@ -15,14 +15,15 @@ El sistema sigue una arquitectura Cliente-Servidor desacoplada:
 2.  **Backend (API Python)**:
     -   **Ubicación**: Raíz del proyecto (entorno virtual en `/venv`).
     -   **Tecnologías**: Python 3.x, Azure AI SDKs (`azure-ai-projects`, `azure-ai-agents`), `azure-identity`.
-    -   **Función**: Valida la identidad del usuario (Entra ID) y utiliza su propia identidad de servicio para consultar a Azure Foundry de forma segura.
+    -   **Función**: Provee configuración al frontend, valida tokens de usuario y utiliza su propia identidad (Service Principal o Developer) para consultar a Azure Foundry.
 
 ## Flujo de Datos
-1.  **Inicio de Sesión**: El usuario se autentica en el frontend con credenciales de Microsoft (Azure AD).
-2.  **Token**: El frontend obtiene un `AccessToken` con el scope `User.Read`.
-3.  **Consulta**: El usuario escribe una pregunta en el chat.
-4.  **Procesamiento**:
+1.  **Inicialización**: El frontend solicita la configuración (`clientId`, `tenantId`) al backend (`GET /config`).
+2.  **Inicio de Sesión**: El usuario se autentica en el frontend con credenciales de Microsoft (Azure AD).
+3.  **Token**: El frontend obtiene un `AccessToken` con el scope `User.Read`.
+4.  **Consulta**: El usuario escribe una pregunta en el chat (solo si está logueado).
+5.  **Procesamiento**:
     -   El frontend envía la pregunta y el token al endpoint `/ask`.
     -   El backend valida el token (seguridad).
-    -   El backend utiliza `DefaultAzureCredential` (identidad del servidor) para invocar al Agente de Azure AI (Foundry).
-5.  **Respuesta**: La IA genera una respuesta (posiblemente consultando datos o herramientas del ERP) y se devuelve al frontend para su visualización.
+    -   El backend utiliza `DefaultAzureCredential` para invocar al Agente de Azure AI (Foundry).
+6.  **Respuesta**: La IA genera una respuesta y se devuelve al frontend para su visualización.

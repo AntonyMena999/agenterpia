@@ -1,14 +1,49 @@
-<h3>Chat ERP IA.</h3>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <style>
+        body { display: flex; height: 100vh; margin: 0; font-family: sans-serif; background: #fff; color: #444; }
+        /* Barra Lateral */
+        nav { width: 220px; background: #f0f4f9; padding: 20px; display: flex; flex-direction: column; font-size: 14px; }
+        .item { padding: 10px; border-radius: 8px; cursor: pointer; margin-bottom: 5px; }
+        .item:hover { background: #e2e7ed; }
+        /* Centro */
+        main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+        h2 { font-weight: 500; font-size: 30px; margin: 0; }
+        #r { margin: 20px 0; font-size: 16px; color: #1a73e8; font-weight: 500; text-align: center; min-height: 24px; }
+        /* Buscador */
+        .input-wrap { width: 100%; max-width: 650px; position: relative; }
+        input { width: 100%; padding: 16px 50px 16px 20px; border-radius: 30px; border: 1px solid #ddd; background: #fff; outline: none; box-shadow: 0 2px 10px rgba(0,0,0,0.05); font-size: 15px; box-sizing: border-box; }
+        .send-btn { position: absolute; right: 15px; top: 12px; background: none; border: none; cursor: pointer; font-size: 20px; color: #1a73e8; }
+        /* Footer */
+        .auth-box { display: flex; gap: 15px; margin-top: 25px; }
+        .btn-auth { background: #f8f9fa; border: 1px solid #eee; padding: 6px 14px; border-radius: 15px; color: #777; cursor: pointer; font-size: 12px; }
+    </style>
+</head>
+<body>
 
-<button onclick="login()">Login</button>
-<button onclick="logout()">Logout</button>
+    <nav>
+        <div style="font-weight: 600; margin-bottom: 15px;">Conversaciones</div>
+        <div class="item">Tema B2B</div>
+        <div class="item">Consulta SAP</div>
+    </nav>
 
-<br><br>
+    <main>
+        <h2>Hola, Equipo</h2>
+        <p id="r">Por donde empezamos?</p>
+        
+        <div class="input-wrap">
+            <input id="q" placeholder="Escribe tu consulta tecnica aqui...">
+            <button class="send-btn" onclick="send()">Enviar</button>
+        </div>
 
-<input id="q" placeholder="Pregunta..." />
-<button onclick="send()">Enviar</button>
+        <div class="auth-box">
+            <button class="btn-auth" onclick="login()">Login</button>
+            <button class="btn-auth" onclick="logout()">Logout</button>
+        </div>
+    </main>
 
-<p id="r"></p>
-
-<script src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>
-<script src="script.js"></script>
+    <script src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
