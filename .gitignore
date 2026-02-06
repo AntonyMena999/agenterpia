@@ -1,7 +1,22 @@
-# Ignorar secretos y configuración local
-.env
-
-# Ignorar carpetas de entorno virtual y caché de Python
-venv/
+# Python
 __pycache__/
 *.pyc
+venv/
+.env
+
+# Node.js / React
+node_modules/
+dist/
+npm-debug.log
+yarn-error.log
+
+# VS Code
+.vscode/
+
+# Frontend Builds
+frontend-react/dist/
+frontend-react/node_modules/
+
+# OS specific
+.DS_Store
+Thumbs.db

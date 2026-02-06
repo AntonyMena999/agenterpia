@@ -1,6 +1,7 @@
-azure-ai-projects
-azure-ai-agents
-azure-identity
-python-dotenv
 fastapi
 uvicorn
+python-dotenv
+pydantic
+azure-identity
+azure-ai-projects
+azure-ai-agents

@@ -14,9 +14,14 @@ async function initAuth() {
         redirectUri: window.location.origin
       }
     });
+
+    // Es OBLIGATORIO manejar la promesa de redirección al cargar, incluso usando Popups.
+    // Esto procesa el token si la página se recarga o si el popup devuelve el control.
+    await msalApp.handleRedirectPromise();
+
     updateUI();
   } catch (error) {
-    console.error("Error cargando configuracion:", error);
+    console.error("Error cargando configuracion:", error); 
   }
 }
 
@@ -40,14 +45,17 @@ function updateUI() {
 }
 
 function login() {
-  // Al terminar el login exitosamente, actualizamos la interfaz para desbloquear el chat
-  msalApp.loginPopup(req)
-    .then(() => updateUI())
-    .catch(error => console.error("Error en login:", error));
+  // Cambiamos a loginRedirect para evitar el error de "Cross-Origin-Opener-Policy"
+  // La interfaz se actualizará automáticamente cuando la página se recargue y se ejecute initAuth()
+  msalApp.loginRedirect(req).catch(err => console.error("Error iniciando login:", err));
 }
 
 function logout() {
-  msalApp.logoutPopup().then(() => updateUI()).catch(console.error);
+  // Especificamos la cuenta para asegurar que MSAL limpie el estado correcto
+  const account = msalApp.getAllAccounts()[0];
+  msalApp.logoutRedirect({
+    account: account
+  });
 }
 
 async function send() {

@@ -5,13 +5,13 @@ from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
+load_dotenv()
+
 # Importamos la lógica del agente desde foundry_agent.py
 try:
     from foundry_agent import ask_agent
 except ImportError:
     from .foundry_agent import ask_agent
-
-load_dotenv()
 
 app = FastAPI(title="Chat ERP IA")
 

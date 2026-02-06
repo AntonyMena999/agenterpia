@@ -7,14 +7,14 @@ Este proyecto es una aplicación web de tipo **Chat ERP IA**. Actúa como una in
 El sistema sigue una arquitectura Cliente-Servidor desacoplada:
 
 1.  **Frontend (SPA)**:
-    -   **Ubicación**: `/frontend`
-    -   **Tecnologías**: HTML5, JavaScript (Vanilla), MSAL.js (Microsoft Authentication Library).
+    -   **Ubicación**: `/frontend-react`
+    -   **Tecnologías**: React, Vite, MSAL React (@azure/msal-react).
     -   **Función**: Autenticación de usuarios y chat interactivo.
     -   **Comunicación**: Realiza peticiones HTTP POST al backend.
 
 2.  **Backend (API Python)**:
     -   **Ubicación**: Raíz del proyecto (entorno virtual en `/venv`).
-    -   **Tecnologías**: Python 3.x, Azure AI SDKs (`azure-ai-projects`, `azure-ai-agents`), `azure-identity`.
+    -   **Tecnologías**: Python 3.x, FastAPI, Pydantic, Azure AI SDKs (`azure-ai-projects`, `azure-ai-agents`), `azure-identity`.
     -   **Función**: Provee configuración al frontend, valida tokens de usuario y utiliza su propia identidad (Service Principal o Developer) para consultar a Azure Foundry.
 
 ## Flujo de Datos

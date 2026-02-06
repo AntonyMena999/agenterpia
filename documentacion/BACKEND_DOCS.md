@@ -6,6 +6,7 @@ El backend actúa como el orquestador entre la interfaz de chat y los servicios 
 ## Stack Tecnológico
 - **Lenguaje**: Python 3.x
 - **Framework API**: FastAPI o Flask (ejecutándose en `http://127.0.0.1:8000`).
+- **Validación**: `pydantic` para esquemas de datos.
 - **IA & Agentes**:
   - `azure-ai-projects`: SDK para gestión de proyectos AI Foundry.
   - `azure-ai-agents`: SDK para creación y ejecución de agentes inteligentes.
